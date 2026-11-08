@@ -18,7 +18,8 @@ La paie, la comptabilité et le financement des formations sont exclus du périm
 ## 2. Membres du groupe
 
 - Louaï Arichi
-- Mustapha 
+- Mustapha Anouar
+- Lukyan Robin
 
 ## 3. Référence utilisée
 
