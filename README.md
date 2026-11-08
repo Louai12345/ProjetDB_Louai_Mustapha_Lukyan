@@ -1,19 +1,20 @@
-# Projet_Louaï-Mustapha-Lukyan
+
+# Projet FormaPlus — Base de données
 
 ## 1. Présentation du projet
 
-FormaPlus est un organisme fictif de formation professionnelle continue en informatique. Il propose aux adultes des formations courtes en programmation, bases de données et bureautique, organisées en présentiel.
+FormaPlus est un organisme fictif de formation professionnelle continue en informatique. Il propose des formations courtes en programmation, bases de données et bureautique, organisées en présentiel.
 
-Ce projet vise à concevoir sa base de données en suivant la méthode MERISE. Cette première partie porte sur l’analyse des besoins et la réalisation du modèle conceptuel de données (MCD).
+L'objectif de ce projet est de concevoir et développer une base de données en suivant la méthode MERISE.
 
-Le périmètre comprend :
-- le catalogue des formations ;
+La base permet de gérer :
+- les formations proposées ;
 - les sessions de formation ;
 - les formateurs et leur encadrement ;
 - les apprenants et leurs inscriptions ;
-- les salles de formation.
+- les salles utilisées.
 
-La paie, la comptabilité et le financement des formations sont exclus du périmètre.
+La paie, la comptabilité et le financement des formations ne sont pas pris en compte.
 
 ## 2. Membres du groupe
 
@@ -23,305 +24,333 @@ La paie, la comptabilité et le financement des formations sont exclus du périm
 
 ## 3. Référence utilisée
 
-Site de référence : [Catalogue des formations Cegos](https://www.cegos.fr/formations).
+Site de référence : https://www.cegos.fr/formations
 
-Cegos sert de référence pour comprendre le secteur de la formation professionnelle. FormaPlus est un organisme fictif : les règles internes utilisées dans ce projet sont des hypothèses pédagogiques et ne décrivent pas le fonctionnement réel de Cegos.
+FormaPlus est un organisme fictif inspiré du secteur de la formation professionnelle. Les règles utilisées sont des hypothèses pédagogiques et ne représentent pas forcément celles de Cegos.
 
-## 4. Prompt final utilisé
+## 4. Analyse des besoins
 
-Tu travailles dans le domaine de la formation professionnelle continue en informatique. Ton organisme de formation, nommé FormaPlus, a comme activité de proposer aux adultes des formations courtes en programmation, bases de données et bureautique, organisées en sessions en présentiel. C’est un organisme fictif inspiré d’un acteur réel comme Cegos. Les données collectées concernent le catalogue des formations, les sessions programmées, les formateurs et leur encadrement, les apprenants, leurs inscriptions et les salles de formation. Inspire-toi du site web suivant : https://www.cegos.fr/formations. Cette référence sert à comprendre le secteur d’activité ; les règles internes ci-dessous sont des hypothèses pédagogiques propres à FormaPlus et ne doivent pas être présentées comme les règles réelles de Cegos.
+Pour obtenir les besoins, nous avons utilisé un prompt avec une IA générative.
 
-Pour délimiter le fonctionnement de FormaPlus : chaque session concerne une seule formation et porte un numéro unique uniquement à l’intérieur de cette formation ; le même numéro peut donc être réutilisé pour une autre formation. Une session ne peut pas exister sans la formation à laquelle elle se rattache. Chaque session est animée par un seul formateur et se déroule dans une seule salle ; un formateur et une salle peuvent être associés à plusieurs sessions à des dates différentes, sans chevauchement. Certains formateurs encadrent d’autres formateurs : un formateur a au plus un responsable, lui-même formateur, et peut encadrer plusieurs collègues. Aucun formateur ne peut se superviser lui-même, directement ou indirectement. Un apprenant peut s’inscrire à plusieurs sessions et une session peut accueillir plusieurs apprenants ; chaque inscription concerne un seul apprenant et une seule session et possède une date et un statut. Une même personne ne peut pas s’inscrire deux fois à la même session. Le nombre d’inscriptions confirmées ne doit dépasser ni l’effectif maximal de la session ni la capacité de la salle. Une session a une date et une heure de début et de fin, et sa fin est postérieure à son début. Limite le périmètre à ces activités, sans intégrer la paie, la comptabilité ou le financement des formations.
+### Prompt utilisé
 
-Ton organisme de formation veut appliquer MERISE pour concevoir un système d'information. Tu es chargé de la partie analyse, c’est-à-dire de collecter les besoins auprès de l’entreprise. Elle a fait appel à un étudiant en ingénierie informatique pour réaliser ce projet, tu dois lui fournir les informations nécessaires pour qu’il applique ensuite lui-même les étapes suivantes de conception et développement de la base de données.
+Tu travailles dans le domaine de la formation professionnelle continue en informatique. Ton organisme de formation, nommé FormaPlus, propose aux adultes des formations courtes en programmation, bases de données et bureautique, organisées en présentiel.
 
-D’abord, établis les règles de gestions des données de ton organisme de formation, sous la forme d'une liste à puce. Elle doit correspondre aux informations que fournit quelqu’un qui connaît le fonctionnement de l’entreprise, mais pas comment se construit un système d’information.
+C'est un organisme fictif inspiré d'un acteur réel comme Cegos. Les données concernent le catalogue des formations, les sessions, les formateurs et leur encadrement, les apprenants, leurs inscriptions et les salles.
 
-Ensuite, à partir de ces règles, fournis un dictionnaire de données brutes avec les colonnes suivantes, regroupées dans un tableau : signification de la donnée, type, taille en nombre de caractères ou de chiffres. Il doit y avoir entre 25 et 35 données. Il sert à fournir des informations supplémentaires sur chaque donnée (taille et type) mais sans a priori sur comment les données vont être modélisées ensuite.
+Inspire-toi du site https://www.cegos.fr/formations.
 
-Fournis donc les règles de gestion et le dictionnaire de données.
+Chaque session concerne une seule formation et porte un numéro unique uniquement à l'intérieur de cette formation. Une session ne peut pas exister sans sa formation.
 
-## 5. Règles de gestion obtenues
+Chaque session est animée par un seul formateur et se déroule dans une seule salle. Les horaires ne doivent pas se chevaucher pour un même formateur ou une même salle.
 
-Les règles suivantes ont été générées avec ChatGPT à partir du prompt ci-dessus. Elles décrivent le fonctionnement fictif de FormaPlus.
+Un formateur peut encadrer plusieurs collègues, mais ne peut pas être son propre responsable, directement ou indirectement.
 
-### 5.1. Catalogue des formations
+Un apprenant peut s'inscrire à plusieurs sessions, mais une seule fois à chaque session.
 
-- **RG01** — FormaPlus propose des formations courtes en présentiel dans trois domaines : programmation, bases de données et bureautique.
-- **RG02** — Chaque formation possède un code unique, un intitulé, un domaine, des objectifs pédagogiques, un niveau, des prérequis et une durée pédagogique exprimée en heures entières.
-- **RG03** — Le niveau d’une formation est « débutant », « intermédiaire » ou « avancé ». Lorsqu’aucun prérequis n’est nécessaire, la mention « Aucun » est enregistrée.
-- **RG04** — Une formation peut être inscrite au catalogue sans qu’une session soit encore programmée. Elle peut ensuite donner lieu à plusieurs sessions.
+Le nombre d'inscriptions confirmées ne doit pas dépasser l'effectif maximal ou la capacité de la salle.
 
-### 5.2. Sessions de formation
+Établis les règles de gestion puis un dictionnaire de données contenant entre 25 et 35 données, avec leur signification, leur type et leur taille.
 
-- **RG05** — Chaque session concerne une seule formation et ne peut pas exister sans celle-ci.
-- **RG06** — Chaque session porte un numéro unique à l’intérieur de sa formation. Deux formations différentes peuvent donc avoir chacune une session numéro 1. Pour désigner une session sans ambiguïté, on utilise le code de sa formation et son numéro.
-- **RG07** — Une session possède une date et une heure de début, une date et une heure de fin ainsi qu’un effectif maximal strictement positif. Sa fin doit être postérieure à son début.
+## 5. Règles de gestion
 
-### 5.3. Formateurs et encadrement
+### Formations
 
-- **RG08** — Chaque session est animée par un seul formateur. Un formateur peut n’animer aucune session ou en animer plusieurs, à condition que leurs horaires ne se chevauchent pas.
-- **RG09** — Chaque formateur possède un numéro interne unique, un nom, un prénom, une adresse électronique et une spécialité principale.
-- **RG10** — Un formateur peut avoir au maximum un responsable, qui est lui-même un formateur de FormaPlus. Un formateur peut encadrer plusieurs collègues ou n’en encadrer aucun.
-- **RG11** — Un formateur ne peut pas être son propre responsable. Les boucles d’encadrement sont également interdites : si un formateur encadre un collègue, ce dernier ne peut pas devenir son supérieur, directement ou par une chaîne de responsables.
+- RG01 : FormaPlus propose des formations en programmation, bases de données et bureautique.
+- RG02 : Chaque formation possède un code unique, un intitulé, un domaine, des objectifs, un niveau, des prérequis et une durée.
+- RG03 : Les niveaux possibles sont débutant, intermédiaire et avancé.
+- RG04 : Une formation peut exister sans session et peut avoir plusieurs sessions.
 
-### 5.4. Salles de formation
+### Sessions
 
-- **RG12** — Chaque session se déroule dans une seule salle. Une salle peut accueillir plusieurs sessions, à condition que leurs horaires ne se chevauchent pas. Elle peut aussi n’accueillir aucune session.
-- **RG13** — Chaque salle possède un code unique, un nom, une adresse, une ville et une capacité d’accueil strictement positive.
+- RG05 : Chaque session concerne une seule formation.
+- RG06 : Le numéro d'une session est unique à l'intérieur d'une formation.
+- RG07 : Une session possède une date et une heure de début et de fin, ainsi qu'un effectif maximal positif.
 
-### 5.5. Apprenants et inscriptions
+### Formateurs
 
-- **RG14** — Chaque apprenant possède un numéro interne unique, un nom, un prénom, une adresse électronique et un numéro de téléphone.
-- **RG15** — Un apprenant peut être enregistré avant toute inscription. Il peut ensuite s’inscrire à plusieurs sessions. Une session peut recevoir plusieurs inscriptions ou n’en avoir aucune.
-- **RG16** — Chaque inscription concerne un seul apprenant et une seule session. Un même apprenant ne peut avoir qu’une inscription à une session donnée.
-- **RG17** — Chaque inscription possède une date et un statut : « en attente », « confirmée » ou « annulée ». En cas d’annulation, l’inscription est conservée et son statut est modifié.
-- **RG18** — Pour chaque session, le nombre d’inscriptions confirmées ne doit dépasser ni l’effectif maximal prévu ni la capacité de la salle. Les inscriptions en attente et annulées ne sont pas comptées dans cet effectif.
+- RG08 : Chaque session est animée par un formateur. Ses sessions ne doivent pas se chevaucher.
+- RG09 : Chaque formateur possède un numéro, un nom, un prénom, un email et une spécialité.
+- RG10 : Un formateur peut avoir un responsable et encadrer plusieurs formateurs.
+- RG11 : Un formateur ne peut pas être son propre responsable et les cycles d'encadrement sont interdits.
 
-### 5.6. Limites du périmètre
+### Salles
 
-- **RG19** — La gestion de la paie, de la comptabilité et du financement des formations est exclue du périmètre.
+- RG12 : Chaque session se déroule dans une salle. Une salle peut accueillir plusieurs sessions sans chevauchement.
+- RG13 : Chaque salle possède un code, un nom, une adresse, une ville et une capacité positive.
 
-## 6. Dictionnaire des données brutes obtenu
+### Apprenants et inscriptions
 
-Le dictionnaire généré contient **30 données**.
+- RG14 : Chaque apprenant possède un numéro, un nom, un prénom, un email et un téléphone.
+- RG15 : Un apprenant peut s'inscrire à plusieurs sessions.
+- RG16 : Un apprenant ne peut pas être inscrit deux fois à la même session.
+- RG17 : Une inscription possède une date et un statut : en attente, confirmée ou annulée.
+- RG18 : Le nombre d'inscriptions confirmées ne doit pas dépasser l'effectif maximal ou la capacité de la salle.
 
-Les tailles correspondent à des longueurs maximales, sauf pour les dates et les heures dont le format est fixe. Les numéros de téléphone sont du texte afin de conserver les zéros initiaux et le signe `+`.
+### Périmètre
 
-Les dates et heures sont présentées sous un format lisible ; leur stockage technique sera défini ultérieurement.
+- RG19 : La comptabilité, la paie et le financement sont exclus.
 
-| Signification de la donnée | Type | Taille en nombre de caractères ou de chiffres |
+## 6. Dictionnaire de données
+
+Le dictionnaire contient 30 données.
+
+| Donnée | Type | Taille |
 |---|---|---|
-| Code unique d’une formation | Alphanumérique | 10 caractères maximum |
-| Intitulé d’une formation | Texte | 100 caractères maximum |
-| Domaine d’une formation | Texte | 30 caractères maximum |
-| Objectifs pédagogiques d’une formation | Texte | 500 caractères maximum |
-| Niveau d’une formation | Texte | 15 caractères maximum |
-| Prérequis d’une formation | Texte | 300 caractères maximum |
-| Durée pédagogique d’une formation, en heures | Entier positif | 3 chiffres maximum |
-| Numéro d’une session au sein de sa formation | Entier positif | 4 chiffres maximum |
-| Date de début d’une session | Date | 10 caractères au format `AAAA-MM-JJ` |
-| Heure de début d’une session | Heure | 5 caractères au format `HH:MM` |
-| Date de fin d’une session | Date | 10 caractères au format `AAAA-MM-JJ` |
-| Heure de fin d’une session | Heure | 5 caractères au format `HH:MM` |
-| Effectif maximal d’une session | Entier positif | 3 chiffres maximum |
-| Numéro interne unique d’un formateur | Entier positif | 6 chiffres maximum |
-| Nom d’un formateur | Texte | 50 caractères maximum |
-| Prénom d’un formateur | Texte | 50 caractères maximum |
-| Adresse électronique d’un formateur | Texte | 254 caractères maximum |
-| Spécialité principale d’un formateur | Texte | 100 caractères maximum |
-| Numéro interne unique d’un apprenant | Entier positif | 8 chiffres maximum |
-| Nom d’un apprenant | Texte | 50 caractères maximum |
-| Prénom d’un apprenant | Texte | 50 caractères maximum |
-| Adresse électronique d’un apprenant | Texte | 254 caractères maximum |
-| Numéro de téléphone d’un apprenant | Texte | 20 caractères maximum |
-| Code unique d’une salle | Alphanumérique | 10 caractères maximum |
-| Nom d’une salle | Texte | 50 caractères maximum |
-| Adresse d’une salle, hors ville | Texte | 150 caractères maximum |
-| Ville dans laquelle se situe une salle | Texte | 100 caractères maximum |
-| Capacité d’accueil d’une salle, en personnes | Entier positif | 3 chiffres maximum |
-| Date d’une inscription | Date | 10 caractères au format `AAAA-MM-JJ` |
-| Statut d’une inscription | Texte | 10 caractères maximum |
+| Code formation | Alphanumérique | 10 |
+| Intitulé formation | Texte | 100 |
+| Domaine | Texte | 30 |
+| Objectifs | Texte | 500 |
+| Niveau | Texte | 15 |
+| Prérequis | Texte | 300 |
+| Durée en heures | Entier positif | 3 chiffres |
+| Numéro session | Entier positif | 4 chiffres |
+| Date début | Date | AAAA-MM-JJ |
+| Heure début | Heure | HH:MM |
+| Date fin | Date | AAAA-MM-JJ |
+| Heure fin | Heure | HH:MM |
+| Effectif maximal | Entier positif | 3 chiffres |
+| Numéro formateur | Entier positif | 6 chiffres |
+| Nom formateur | Texte | 50 |
+| Prénom formateur | Texte | 50 |
+| Email formateur | Texte | 254 |
+| Spécialité | Texte | 100 |
+| Numéro apprenant | Entier positif | 8 chiffres |
+| Nom apprenant | Texte | 50 |
+| Prénom apprenant | Texte | 50 |
+| Email apprenant | Texte | 254 |
+| Téléphone | Texte | 20 |
+| Code salle | Alphanumérique | 10 |
+| Nom salle | Texte | 50 |
+| Adresse salle | Texte | 150 |
+| Ville | Texte | 100 |
+| Capacité | Entier positif | 3 chiffres |
+| Date inscription | Date | AAAA-MM-JJ |
+| Statut inscription | Texte | 10 |
 
-## 7. Modèle conceptuel de données
+## 7. Modèle conceptuel de données (MCD)
 
+Le MCD a été réalisé avec diagrams.net.
 
-![MCD de FormaPlus](mcd.png)
+![MCD FormaPlus](mcd.png)
 
-[Fichier source modifiable](MCD_FormaPlus.drawio)
-Le MCD a été réalisé avec diagrams.net (draw.io), en raison de difficultés d’utilisation de Looping sous Mac . Le schéma et son fichier source modifiable sont disponibles dans ce dépôt .
+[Fichier source du MCD](MCD_FormaPlus.drawio)
 
-## 8. Cinquième étape : interrogation de la base de données
+Le modèle contient cinq entités principales : FORMATION, SESSION, FORMATEUR, APPRENANT et SALLE.
 
-### 8.1. Scénario d’utilisation
+SESSION est une entité faible car son numéro est unique seulement à l'intérieur d'une formation.
 
-Le responsable pédagogique de FormaPlus prépare les sessions de novembre 2026 à avril 2027. Il utilise la base pour consulter le catalogue, organiser les salles et les formateurs, suivre les inscriptions et préparer les convocations des apprenants.
+On retrouve aussi une association récursive ENCADRER sur FORMATEUR.
 
-Il doit identifier les formations proposées, les sessions programmées et les ressources disponibles. Il doit également mesurer l’activité par formation et par statut d’inscription, repérer les formations sans session, les formateurs sans affectation et les sessions sans inscription confirmée.
+Le modèle respecte la troisième forme normale (3FN), car les attributs descriptifs dépendent des clés des relations, sans dépendances transitives entre attributs non-clés dans notre modélisation.
 
-Les informations recherchées respectent le périmètre de FormaPlus : catalogue, sessions, salles, encadrement et inscriptions. Les statistiques portent sur le jeu de données enregistré ; les recherches de planning peuvent cibler une période particulière.
+## 8. Modèle logique de données (MLD)
 
-### 8.2. Données à extraire et requêtes
+Le MLD a été généré avec Mocodo.
 
-Le fichier [4_interrogation.sql](4_interrogation.sql) contient 22 requêtes, dans l’ordre du tableau suivant. Les numéros correspondent aux instructions `SELECT` principales ; l’instruction `USE FormaPlus` n’est pas comptée.
+![MLD FormaPlus](mld.png)
 
-#### Projections et sélections
+Les six relations obtenues sont :
 
-| Requête | Données recherchées | Opérateurs utilisés |
-|---|---|---|
-| Q1 | Codes, intitulés, domaines, niveaux et durées des formations pour débutants, triés par domaine et intitulé. | `SELECT`, `WHERE`, `ORDER BY` |
-| Q2 | Villes disposant de salles, sans doublon et par ordre alphabétique. | `DISTINCT`, `ORDER BY` |
-| Q3 | Codes, intitulés, niveaux et durées des formations dont l’intitulé contient « SQL ». | `LIKE '%SQL%'`, `ORDER BY` |
-| Q4 | Codes, intitulés, domaines et niveaux des formations de programmation ou de bases de données. | `IN`, `ORDER BY` |
-| Q5 | Sessions dont la date de début est comprise entre le 1er novembre et le 31 décembre 2026, avec leurs dates et horaires, triées chronologiquement. | `BETWEEN`, `ORDER BY` |
+- APPRENANT(numero_apprenant, nom, prenom, email, telephone)
+- FORMATEUR(numero_formateur, nom, prenom, email, specialite_principale, numero_formateur_responsable)
+- FORMATION(code_formation, intitule, domaine, objectifs, niveau, prerequis, duree_heures)
+- SALLE(code_salle, nom, adresse, ville, capacite)
+- SESSION(code_formation, numero_session, date_debut, heure_debut, date_fin, heure_fin, effectif_max, numero_formateur, code_salle)
+- INSCRIRE(code_formation, numero_session, numero_apprenant, date_inscription, statut)
 
-#### Fonctions d’agrégation
+La clé primaire de SESSION est composée de code_formation et numero_session.
 
-| Requête | Données recherchées | Opérateurs utilisés |
-|---|---|---|
-| Q6 | Nombre de sessions par formation, uniquement pour les formations ayant au moins deux sessions. | `COUNT`, `GROUP BY`, `HAVING` |
-| Q7 | Nombre de salles et capacité totale par ville, uniquement pour les villes offrant au moins 40 places. | `COUNT`, `SUM`, `GROUP BY`, `HAVING` |
-| Q8 | Durées moyenne, minimale et maximale des formations par domaine, pour les domaines dont la moyenne atteint au moins 21 heures. | `AVG`, `MIN`, `MAX`, `ROUND`, `GROUP BY`, `HAVING` |
-| Q9 | Nombre d’inscriptions confirmées par session, uniquement pour les sessions ayant au moins trois confirmations. | `WHERE`, `COUNT`, `GROUP BY`, `HAVING` |
-| Q10 | Nombre d’inscriptions par statut, uniquement pour les statuts représentés par au moins dix inscriptions. | `COUNT`, `GROUP BY`, `HAVING` |
+La clé primaire de INSCRIRE est composée de code_formation, numero_session et numero_apprenant.
 
-#### Jointures
+FORMATEUR possède également une clé étrangère récursive vers son responsable.
 
-| Requête | Données recherchées | Opérateurs utilisés |
-|---|---|---|
-| Q11 | Codes et intitulés des formations de programmation, numéros et dates de début de leurs sessions démarrant au premier trimestre 2027. | Jointure interne, sélection, projection |
-| Q12 | Catalogue complet avec les sessions associées, y compris les formations sans session. | `LEFT JOIN` |
-| Q13 | Toutes les salles avec les sessions associées, y compris les salles sans session. | `RIGHT JOIN` |
-| Q14 | Identités des formateurs et de leur responsable direct, en conservant les formateurs sans responsable. | Autojointure externe gauche |
-| Q15 | Identités et courriels des apprenants confirmés, avec la formation, la session, la date, l’heure et la salle, pour préparer leurs convocations. | Jointures internes multiples entre cinq tables |
+## 9. Modèle physique de données (MPD)
 
-#### Requêtes imbriquées
+Le MPD a été créé avec MySQL.
 
-| Requête | Données recherchées | Opérateurs utilisés |
-|---|---|---|
-| Q16 | Formations ayant au moins une session dans une salle située à Bordeaux. | Sous-requête avec `IN` |
-| Q17 | Formations du catalogue n’ayant aucune session programmée. | Sous-requête avec `NOT IN` |
-| Q18 | Identités et courriels des apprenants ayant au moins une inscription confirmée. | Sous-requête corrélée avec `EXISTS` |
-| Q19 | Formateurs sans session affectée, avec leur spécialité. | Sous-requête corrélée avec `NOT EXISTS` |
-| Q20 | Formations dont la durée dépasse celle d’au moins une formation de bureautique, afin de repérer les formats plus longs qu’une partie de cette offre. | Sous-requête avec `> ANY` |
-| Q21 | Formations les plus longues dans chaque domaine, en conservant les ex æquo. | Sous-requête corrélée avec `>= ALL` |
-| Q22 | Sessions sans inscription confirmée, avec leur date et leur effectif maximal, pour préparer une relance. | Sous-requête corrélée avec `NOT EXISTS` |
+Le fichier `1_creation.sql` contient les six tables, leurs clés primaires et leurs clés étrangères.
 
-Une session est identifiée par le couple `(code_formation, numero_session)`. Les jointures et sous-requêtes qui relient une inscription à une session utilisent les deux colonnes. Pour les effectifs confirmés et les convocations, seules les inscriptions de statut `confirmée` sont retenues.
+Nous avons utilisé ON DELETE CASCADE, ON DELETE SET NULL, ON DELETE RESTRICT et ON UPDATE CASCADE pour gérer les relations.
 
-### 8.3. Étude des plans d’exécution de Q11
+Le fichier `2_contraintes.sql` contient 17 contraintes CHECK.
 
-#### Objectif et données utilisées
+Elles permettent de vérifier :
+- les durées positives ;
+- les niveaux et domaines autorisés ;
+- les effectifs et capacités positifs ;
+- les dates de début et de fin ;
+- les statuts des inscriptions ;
+- les formats simples des emails ;
+- certains champs texte non vides.
 
-Le responsable pédagogique souhaite obtenir les sessions de programmation qui démarrent entre le 1er janvier et le 31 mars 2027. Le résultat contient le code et l’intitulé de la formation, ainsi que le numéro et la date de début de la session.
+Certaines règles plus complexes ne sont pas encore gérées automatiquement, notamment les cycles d'encadrement, les chevauchements de sessions et les limites d'inscriptions confirmées.
 
-La requête Q11 utilise trois opérateurs différents de l’algèbre relationnelle : la sélection $\sigma$, la projection $\pi$ et la jointure $\bowtie$.
+Elles nécessiteraient des triggers ou des vérifications supplémentaires.
 
-Les cardinalités sont calculées sur les données du fichier `3.insertions.sql` :
+## 10. Insertion des données
 
-| Relation ou résultat intermédiaire | Nombre de lignes |
+Les données ont été générées à l'aide d'un prompt adapté à FormaPlus.
+
+Le prompt est disponible dans `prompt_insertion.txt`.
+
+Les insertions sont disponibles dans `3.insertions.sql`.
+
+Nous avons inséré :
+
+| Table | Nombre de lignes |
 |---|---:|
-| `FORMATION` | 12 |
-| `SESSION` | 24 |
-| Formations du domaine `programmation` | 5 |
-| Sessions démarrant entre le 1er janvier et le 31 mars 2027, tous domaines confondus | 12 |
-| Jointure de toutes les formations avec toutes leurs sessions | 24 |
-| Sessions de programmation démarrant au premier trimestre 2027 | 6 |
+| FORMATION | 12 |
+| FORMATEUR | 10 |
+| SALLE | 8 |
+| APPRENANT | 50 |
+| SESSION | 24 |
+| INSCRIRE | 100 |
+| **Total** | **204** |
 
-On note :
+Les insertions ont été exécutées dans MySQL et les nombres de lignes ont été vérifiés avec COUNT(*).
 
-- $F$ : la relation `FORMATION` ;
-- $S$ : la relation `SESSION` ;
-- $P_F$ : la condition `F.domaine = 'programmation'` ;
-- $P_S$ : la condition `S.date_debut BETWEEN '2027-01-01' AND '2027-03-31'` ;
-- $J$ : la condition `F.code_formation = S.code_formation` ;
-- $L$ : les colonnes `F.code_formation`, `F.intitule`, `S.numero_session`, `S.date_debut` ;
-- $L_F$ : les colonnes `F.code_formation`, `F.intitule` ;
-- $L_S$ : les colonnes `S.code_formation`, `S.numero_session`, `S.date_debut`.
+## 11. Scénario d'utilisation et interrogation
 
-Le résultat final est le suivant :
+Le responsable pédagogique de FormaPlus souhaite organiser les sessions de formation entre novembre 2026 et avril 2027.
 
-| Code formation | Intitulé | Numéro de session | Date de début |
-|---|---|---:|---|
-| F001 | Initiation à Python | 2 | 2027-01-11 |
-| F001 | Initiation à Python | 3 | 2027-03-08 |
-| F002 | Python avancé | 2 | 2027-02-01 |
-| F003 | Développement Java | 2 | 2027-02-15 |
-| F004 | Développement Web | 2 | 2027-01-18 |
-| F005 | Programmation en C | 2 | 2027-03-15 |
+Il utilise la base pour consulter les formations, organiser les salles et les formateurs, suivre les inscriptions et préparer les convocations.
 
-#### Méthode de calcul
+Il doit également mesurer l'activité par formation et par statut d'inscription, repérer les formations sans session, les formateurs sans affectation et les sessions sans inscription confirmée.
 
-Le calcul applique le modèle de l’exercice 6 du TD3 :
+Le fichier [4_interrogation.sql](4_interrogation.sql) contient 22 requêtes.
 
-- Une jointure entre deux relations de $n_1$ et $n_2$ lignes nécessite $n_1 \times n_2$ instructions.
-- Une sélection ou une projection sur une relation de $n$ lignes nécessite $n$ instructions.
-- Les feuilles représentent les tables sources ; elles ne constituent pas des opérateurs supplémentaires à compter.
+### Sélections et projections
 
-Le tri final `ORDER BY` sert à présenter les résultats ; son coût n’entre pas dans ce modèle d’algèbre relationnelle. Les coûts ci-dessous sont donc les coûts théoriques des opérateurs étudiés en TD.
+| Requête | Données recherchées |
+|---|---|
+| Q1 | Formations pour débutants |
+| Q2 | Villes disposant de salles, sans doublons |
+| Q3 | Formations contenant SQL dans leur intitulé |
+| Q4 | Formations en programmation ou bases de données |
+| Q5 | Sessions entre novembre et décembre 2026 |
 
-#### Plan A : jointure avant les sélections
+### Agrégations
 
-La jointure est effectuée sur toutes les lignes, puis une sélection conserve les lignes qui respectent les deux conditions. La projection extrait ensuite les colonnes demandées.
+| Requête | Données recherchées |
+|---|---|
+| Q6 | Nombre de sessions par formation |
+| Q7 | Capacité totale des salles par ville |
+| Q8 | Durées moyennes, minimales et maximales par domaine |
+| Q9 | Nombre d'inscriptions confirmées par session |
+| Q10 | Nombre d'inscriptions par statut |
 
-$$
-R_A = \pi_L\left(\sigma_{P_F \land P_S}\left(F \bowtie_J S\right)\right)
-$$
+### Jointures
 
-```mermaid
-flowchart TD
-    A["π L : 6 lignes"]
-    B["σ PF et PS : 6 lignes"]
-    C["⋈ J : 24 lignes"]
-    D["FORMATION : 12 lignes"]
-    E["SESSION : 24 lignes"]
-    A --> B
-    B --> C
-    C --> D
-    C --> E
+| Requête | Données recherchées |
+|---|---|
+| Q11 | Sessions de programmation au premier trimestre 2027 |
+| Q12 | Formations et sessions, y compris les formations sans session |
+| Q13 | Salles et sessions, y compris les salles sans session |
+| Q14 | Formateurs et leurs responsables |
+| Q15 | Apprenants confirmés, formations, sessions et salles |
+
+### Requêtes imbriquées
+
+| Requête | Données recherchées |
+|---|---|
+| Q16 | Formations ayant une session à Bordeaux |
+| Q17 | Formations sans session |
+| Q18 | Apprenants ayant une inscription confirmée |
+| Q19 | Formateurs sans session |
+| Q20 | Formations plus longues qu'au moins une formation de bureautique |
+| Q21 | Formations les plus longues de chaque domaine |
+| Q22 | Sessions sans inscription confirmée |
+
+Les requêtes utilisent WHERE, ORDER BY, DISTINCT, LIKE, IN, BETWEEN, GROUP BY, HAVING, INNER JOIN, LEFT JOIN, RIGHT JOIN, EXISTS, NOT EXISTS, ANY et ALL.
+
+## 12. Étude des plans d'exécution
+
+Pour cette partie, nous avons choisi la requête Q11, qui recherche les formations en programmation ayant une session entre janvier et mars 2027.
+
+Elle utilise trois opérateurs d'algèbre relationnelle : sélection, projection et jointure.
+
+### Requête utilisée
+
+```sql
+SELECT f.code_formation, f.intitule, s.numero_session, s.date_debut
+FROM FORMATION AS f
+INNER JOIN SESSION AS s ON s.code_formation = f.code_formation
+WHERE f.domaine = 'programmation'
+AND s.date_debut BETWEEN '2027-01-01' AND '2027-03-31'
+ORDER BY f.code_formation, s.numero_session;
 ```
 
-L’arbre se lit des feuilles vers la racine. Les notations `PF`, `PS` et `J` correspondent aux conditions définies ci-dessus.
+### Données utilisées
 
-| Étape | Opérateur | Lignes en entrée | Lignes en sortie | Instructions |
-|---|---|---:|---:|---:|
-| 1 | Jointure sur le code de formation | 12 et 24 | 24 | $12 \times 24 = 288$ |
-| 2 | Sélection sur le domaine et la période | 24 | 6 | 24 |
-| 3 | Projection sur les colonnes $L$ | 6 | 6 | 6 |
-| **Total** | | | **6** | **318** |
+- FORMATION : 12 lignes
+- SESSION : 24 lignes
+- Formations en programmation : 5 lignes
+- Sessions du premier trimestre 2027 : 12 lignes
+- Résultat final : 6 lignes
 
-La jointure produit 24 lignes, car chaque session référence exactement une formation existante. La sélection conserve six sessions. La projection garde le code de formation et le numéro de session : les six lignes restent distinctes.
+### Comparaison graphique des plans
 
-#### Plan B : sélections et projections avant la jointure
+![Comparaison des plans d'exécution](comparaison_plans_execution.png)
 
-Les deux relations sont filtrées séparément. On conserve ensuite uniquement les colonnes utiles au résultat ou à la jointure. La jointure porte ainsi sur cinq formations et douze sessions.
+### Plan A : jointure avant les sélections
 
-$$
-R_B = \pi_L\left(
-\pi_{L_F}\left(\sigma_{P_F}(F)\right)
-\bowtie_J
-\pi_{L_S}\left(\sigma_{P_S}(S)\right)
-\right)
-$$
+Dans le premier plan, on commence par faire la jointure entre FORMATION et SESSION, puis on applique les conditions.
 
-```mermaid
-flowchart TD
-    A["π L : 6 lignes"]
-    B["⋈ J : 6 lignes"]
-    C["π LF : 5 lignes"]
-    D["π LS : 12 lignes"]
-    E["σ PF : 5 lignes"]
-    F["σ PS : 12 lignes"]
-    G["FORMATION : 12 lignes"]
-    H["SESSION : 24 lignes"]
-    A --> B
-    B --> C
-    B --> D
-    C --> E
-    D --> F
-    E --> G
-    F --> H
-```
+La jointure donne 24 lignes et la sélection conserve les 6 lignes recherchées.
 
-| Étape | Opérateur | Lignes en entrée | Lignes en sortie | Instructions |
-|---|---|---:|---:|---:|
-| 1 | Sélection des formations de programmation | 12 | 5 | 12 |
-| 2 | Projection sur $L_F$ | 5 | 5 | 5 |
-| 3 | Sélection des sessions du premier trimestre 2027 | 24 | 12 | 24 |
-| 4 | Projection sur $L_S$ | 12 | 12 | 12 |
-| 5 | Jointure sur le code de formation | 5 et 12 | 6 | $5 \times 12 = 60$ |
-| 6 | Projection finale sur $L$ | 6 | 6 | 6 |
-| **Total** | | | **6** | **119** |
+Calcul du coût :
 
-Les projections intermédiaires conservent les identifiants : `code_formation` pour les formations et le couple `(code_formation, numero_session)` pour les sessions. Elles ne fusionnent donc aucune ligne et préservent les colonnes nécessaires à la jointure.
+- Jointure : 12 × 24 = 288
+- Sélection : 24
+- Projection : 6
 
-#### Comparaison et choix du plan
+**Coût total = 318 opérations.**
 
-| Plan | Coût de la jointure | Coût total | Résultat |
-|---|---:|---:|---:|
-| A : jointure puis sélection | 288 | 318 | 6 lignes |
-| B : sélections et projections anticipées | 60 | 119 | 6 lignes |
+### Plan B : sélections et projections avant la jointure
 
-Le plan B économise $318 - 119 = 199$ instructions, soit environ $62{,}58\,\%$ du coût total du plan A. Dans le modèle du TD3, son coût est environ $2{,}67$ fois plus faible.
+Dans le deuxième plan, on filtre les deux tables avant de faire la jointure.
 
-Les deux plans sont équivalents : chaque condition de sélection porte sur une seule relation et peut être appliquée avant la jointure interne. Les projections anticipées conservent les clés de jointure et toutes les colonnes du résultat. Le plan B est donc le plan retenu parmi les deux : il réduit fortement les entrées de la jointure et la largeur des relations intermédiaires.
+On conserve 5 formations en programmation et 12 sessions sur la période recherchée.
+
+La jointure donne ensuite 6 lignes.
+
+Calcul du coût :
+
+- Sélection FORMATION : 12
+- Projection FORMATION : 5
+- Sélection SESSION : 24
+- Projection SESSION : 12
+- Jointure : 5 × 12 = 60
+- Projection finale : 6
+
+**Coût total = 119 opérations.**
+
+### Comparaison
+
+| Plan | Coût total | Résultat |
+|---|---:|---:|
+| Plan A | 318 | 6 lignes |
+| Plan B | 119 | 6 lignes |
+
+Le deuxième plan est plus intéressant car il réduit le nombre de lignes avant la jointure.
+
+On économise 199 opérations avec cette méthode de calcul.
+
+Les coûts correspondent à une estimation théorique avec une jointure par boucles imbriquées. Ce ne sont pas les coûts réels calculés par MySQL.
+
+## 13. Bilan critique
+
+La base FormaPlus permet de gérer les principales informations nécessaires à un organisme de formation.
+
+Les tables sont reliées entre elles et les données peuvent être interrogées avec différents types de requêtes SQL.
+
+Les contraintes permettent d'éviter plusieurs erreurs de saisie.
+
+Cependant, certaines améliorations seraient possibles :
+- ajouter des triggers pour vérifier les chevauchements de sessions ;
+- empêcher automatiquement les cycles entre responsables ;
+- contrôler les capacités lors de la confirmation des inscriptions ;
+- ajouter une interface pour faciliter l'utilisation de la base.
+
+Le projet nous a permis de revoir les différentes étapes de MERISE, depuis l'analyse des besoins jusqu'à l'interrogation de la base.
