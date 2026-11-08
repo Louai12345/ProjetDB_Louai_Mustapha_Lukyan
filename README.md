@@ -291,7 +291,7 @@ ORDER BY f.code_formation, s.numero_session;
 
 ### Comparaison graphique des plans
 
-![Comparaison des plans d'exécution](comparaison_plans_execution.png)
+![Comparaison des plans d'exécution](comparaison_plans_execution SQL.png)
 
 ### Plan A : jointure avant les sélections
 
