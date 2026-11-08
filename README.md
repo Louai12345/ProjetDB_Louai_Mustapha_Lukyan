@@ -1,5 +1,5 @@
 
-# Projet FormaPlus — Base de données
+# Projet  — Base de données
 
 ## 1. Présentation du projet
 
