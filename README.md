@@ -1,4 +1,4 @@
-# Projet_Loua-_Mustapha
+# Projet_Louaï-Mustapha-Lukyan
 
 ## 1. Présentation du projet
 
