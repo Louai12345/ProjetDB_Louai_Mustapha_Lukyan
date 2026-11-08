@@ -234,7 +234,13 @@ VALUES
 ('F008',2,34,'2027-02-02','confirmée'),
 ('F008',2,39,'2027-02-03','en attente'),
 ('F008',2,44,'2027-02-04','confirmée'),
-('F008',2,49,'2027-02-05','annulée');
+('F008',2,49,'2027-02-05','annulée'),
+('F009', 1, 30, '2027-01-10', 'confirmée'),
+('F009', 1, 35, '2027-01-11', 'confirmée'),
+('F010', 1, 40, '2026-11-10', 'en attente'),
+('F010', 1, 45, '2026-11-11', 'confirmée'),
+('F011', 1, 50, '2026-12-10', 'annulée');
+
 
 -- Vérification des nombres de lignes
 SELECT COUNT(*) AS nb_formations FROM FORMATION;
