@@ -1,0 +1,134 @@
+# Prompt de génération des données — FormaPlus
+
+Tu es un expert en bases de données relationnelles et en SQL MySQL 8.
+
+## Contexte
+
+FormaPlus est un organisme fictif de formation professionnelle continue en informatique. Il propose des formations courtes en programmation, bases de données et bureautique.
+
+La base de données a été conçue selon la méthode MERISE. Elle permet de gérer les formations, les sessions, les formateurs, les apprenants, les inscriptions et les salles.
+
+## Objectif
+
+Générer un script SQL nommé `3_insertion.sql` permettant de remplir la base FormaPlus avec des données fictives, réalistes et cohérentes.
+
+## Structure de la base
+
+Les six tables sont les suivantes :
+
+**FORMATION**
+- code_formation VARCHAR(10), clé primaire
+- intitule VARCHAR(100)
+- domaine VARCHAR(30)
+- objectifs VARCHAR(500)
+- niveau VARCHAR(15)
+- prerequis VARCHAR(300)
+- duree_heures SMALLINT UNSIGNED
+
+**FORMATEUR**
+- numero_formateur INT UNSIGNED, clé primaire
+- nom VARCHAR(50)
+- prenom VARCHAR(50)
+- email VARCHAR(254)
+- specialite_principale VARCHAR(100)
+- numero_formateur_responsable INT UNSIGNED, clé étrangère vers FORMATEUR, nullable
+
+**SALLE**
+- code_salle VARCHAR(10), clé primaire
+- nom VARCHAR(50)
+- adresse VARCHAR(150)
+- ville VARCHAR(100)
+- capacite SMALLINT UNSIGNED
+
+**APPRENANT**
+- numero_apprenant INT UNSIGNED, clé primaire
+- nom VARCHAR(50)
+- prenom VARCHAR(50)
+- email VARCHAR(254)
+- telephone VARCHAR(20)
+
+**SESSION**
+- code_formation VARCHAR(10), clé primaire composée et clé étrangère vers FORMATION
+- numero_session SMALLINT UNSIGNED, clé primaire composée
+- date_debut DATE
+- heure_debut TIME
+- date_fin DATE
+- heure_fin TIME
+- effectif_max SMALLINT UNSIGNED
+- numero_formateur INT UNSIGNED, clé étrangère vers FORMATEUR
+- code_salle VARCHAR(10), clé étrangère vers SALLE
+
+**INSCRIRE**
+- code_formation VARCHAR(10), clé primaire composée
+- numero_session SMALLINT UNSIGNED, clé primaire composée
+- numero_apprenant INT UNSIGNED, clé primaire composée
+- date_inscription DATE
+- statut VARCHAR(10)
+
+Le couple (code_formation, numero_session) de INSCRIRE est une clé étrangère vers SESSION. numero_apprenant est une clé étrangère vers APPRENANT.
+
+## Quantité de données
+
+Générer exactement :
+- 12 formations
+- 10 formateurs
+- 8 salles
+- 50 apprenants
+- 24 sessions
+- 100 inscriptions
+
+Soit 204 enregistrements au total.
+
+## Contraintes à respecter
+
+1. Tous les identifiants doivent être cohérents avec les clés primaires et étrangères.
+2. Les formations appartiennent uniquement aux domaines « programmation », « bases de données » et « bureautique ».
+3. Les niveaux autorisés sont « débutant », « intermédiaire » et « avancé ».
+4. Les durées des formations, les capacités des salles et les effectifs maximaux doivent être strictement positifs.
+5. Chaque session doit être associée à une formation, un formateur et une salle existants.
+6. Le numéro de session est unique uniquement à l'intérieur d'une formation.
+7. La date et l'heure de fin d'une session doivent être postérieures à celles du début.
+8. Les sessions attribuées à un même formateur ou à une même salle ne doivent pas se chevaucher.
+9. Les formateurs peuvent avoir un responsable existant, ou aucun responsable.
+10. Aucun formateur ne doit être son propre responsable et aucune chaîne d'encadrement ne doit former de cycle.
+11. Les statuts des inscriptions sont uniquement « en attente », « confirmée » et « annulée ».
+12. Un apprenant ne peut être inscrit qu'une seule fois à une même session.
+13. Le nombre d'inscriptions confirmées ne doit dépasser ni l'effectif maximal de la session ni la capacité de sa salle.
+14. Chaque inscription doit avoir une date antérieure ou égale au début de sa session.
+15. Les adresses électroniques doivent être fictives, correctement formatées et uniques dans chaque table de personnes.
+16. Les numéros de téléphone doivent être fictifs et stockés sous forme de texte.
+17. Respecter les tailles maximales et les types SQL de chaque colonne.
+18. Utiliser des dates de sessions cohérentes, situées entre 2026 et 2027.
+19. Prévoir une variété de données permettant de tester des jointures, des agrégations, des sous-requêtes, des filtres et des tris.
+20. Prévoir notamment quelques formations sans session, des apprenants sans inscription, des sessions sans inscription et des formateurs sans session, afin de tester les jointures externes et les requêtes NOT EXISTS.
+
+## Format de sortie
+
+Fournir uniquement du code SQL compatible MySQL 8.
+
+Commencer par `USE FormaPlus;`.
+
+Utiliser des instructions INSERT INTO explicites, regroupées par table.
+
+Respecter impérativement l'ordre d'insertion suivant :
+
+1. FORMATION
+2. FORMATEUR
+3. SALLE
+4. APPRENANT
+5. SESSION
+6. INSCRIRE
+
+Utiliser des identifiants explicites, sans dépendre d'AUTO_INCREMENT.
+
+Ne pas inclure de CREATE TABLE, ALTER TABLE, DROP TABLE ou modification de contraintes.
+
+Ne pas utiliser de données réelles personnelles.
+
+Terminer par six requêtes SELECT COUNT(*) permettant de vérifier le nombre d'enregistrements de chaque table.
+
+Le script doit pouvoir être exécuté sur une base FormaPlus dont les tables existent déjà et sont initialement vides, sans erreur de clé primaire, de clé étrangère ou de contrainte CHECK.
+
+## Résultat attendu
+
+Un script SQL complet, directement exécutable dans MySQL Workbench, contenant exactement 204 enregistrements cohérents avec le MLD et les règles métier de FormaPlus.
